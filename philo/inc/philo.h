@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/10/28 18:22:20 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:32:42 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 # include <pthread.h> //thread functions
 
 //struct
-typedef struct  s_philo
+typedef struct  l_philo
 {
 
 }   t_philo; 
 
-typedef struct  s_data
+typedef struct  l_info
 {
     /* data */
-}   t_data;
+}   t_info;
 
 
 //functions
