@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/10/28 19:32:42 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/10/29 00:37:01 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 # include <pthread.h> //thread functions
 
 //struct
-typedef struct  l_philo
+typedef struct  s_philo
 {
 
 }   t_philo; 
 
-typedef struct  l_info
+typedef struct  s_info
 {
     /* data */
 }   t_info;
