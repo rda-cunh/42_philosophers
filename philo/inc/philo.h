@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/10/30 00:07:37 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:25:49 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct  s_philo
     //eat_count to count the number of meals eated and control las program argument; 
 }   t_philo; 
 
-typedef struct  s_info
+typedef struct  s_table
 {
     // number_of_philosophers: the count of philosophers.
     // time_to_die: time limit before a philosopher starves if they don’t eat.
@@ -41,7 +41,7 @@ typedef struct  s_info
     // the forks (array of mutex w/ pthread_mutex_t)
     // start time timestamp (begginning of simulations)
     // an array of t_philo to track the philosophers
-}   t_info;
+}   t_table;
 
 
 //functions
