@@ -3,25 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:22 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/10/29 00:53:44 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:30:29 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int main(int argc, char **argv)
+void	set_table(int argc, char **argv)
 {
-    int number_of_philosophers; //and number of forks
+	int number_of_philosophers; //and number of forks
     int time_to_die; //time do die since last meal or beggining of simulation
     int time_to_eat; //time each philosopher needs to eat
     int time_to_sleep; //time each philosopher will spend sleeping
     int number_of_times_each_philosopher_must_eat; //simulation stops if all philosophers eat this number of times
 
-    if (argc == 5 || argc == 6)
-    {
+	if (argc != 5 ||
+
+}
+
+int main(int argc, char **argv)
+{
+	set_table(argc, argv); 
+
+
         //read arguments and atoi them
         //store variables in a structure (t_info)
 
@@ -37,6 +44,5 @@ int main(int argc, char **argv)
         //Must have a function to keep the log and print alls the timestamps ans messages (Synchronize logging (e.g. mutex) to avoid log message overlap, ensuring a clear output
         //clean um functions that destoy_mutexes and free_resources
 
-    }
     return (0); 
 }
