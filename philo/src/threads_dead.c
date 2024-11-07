@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   threads_dead.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:35:12 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/07 15:48:49 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:03:29 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@
 #define GREEN			"\e[32m"
 
 //create structure that contains the count and the mutex
-typedef struct s_counter
+typedef struct s_locks
 {
-	pthread_mutex_t count_mutex;
+	pthread_mutex_t lock1;
+	pthread_mutex_t lock2;
 	unsigned int 	count;
-}	t_counter;
-
-void	*thread_routine(void *data)
+}	t_locks;
+d
+void	*thread_routine1(void *data)
 {
 	pthread_t		tid;
 	t_counter		*counter; //this changed to a pointer to a stuct initialized in main
