@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/08 18:36:07 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/12 01:35:40 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <unistd.h> //write  and usleep
 # include <sys/time.h> //gettimeoftheday
 # include <pthread.h> //thread functions
+
+# define PHILO_MAX 200
 
 //structs (must check during implementation!)
 typedef struct  s_philo
@@ -39,21 +41,26 @@ typedef struct  s_table
 	long long		time_die; //time_to_die: time limit before a philosopher starves if they don’t eat.
 	long long		time_eat; //time_to_eat: duration of each eating session
 	long long		time_sleep; //time_to_sleep: duration of each sleeping session
-	unsigned int	meals_required; //meals_required (optional): the number of times each philosopher should eat, if it’s a stopping condition.
+	unsigned int	num_meals_required; //meals_required (optional): the number of times each philosopher should eat, if it’s a stopping condition.
 	int				end_meal_flg; //flag that signals the end of the simulation (a philo died or meals required are achieved)
     long long		start_time; //start time timestamp (begginning of simulations)
 	t_philo			*philos; //an array of t_philo to track the philosophers
 	pthread_mutex_t *forks; //an array to the store the mutexes referenced in my philo struct
 }   t_table;
 
-
 //funtions
 //main.c
 void	set_table(t_table *table, int argc, char **argv);
 void	summon_philos(t_table s_table); 
 
+//check_args.c
+int	isnumber(char *arg);
+int	check_args(char **argv);
+
 //utils.c
-int		ft_atoi(const char *str); 
+int		ft_atoi(const char *str);
+//must add a function to get current time: long long	get_current_time(void);
+//must add a function to allow philos to sleep: void	ft_usleep(long long time);
 
 //exit.c
 int		error_exit(char *error_msg); 

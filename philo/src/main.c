@@ -3,36 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:22 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/08 18:42:38 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/12 02:00:53 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	summon_philos(t_table *s_table)
+void	summon_philos(t_table *table)
 {
+	int i;
+
+	i = 0; 
+	table->philos = (t_philo *)malloc(sizeof(t_philo) * (table->num_philo + 1));
+	if (!table->philos)
+		return (NULL);
+	while(i < table->num_philo)
+	{
+		table->philos[i].philo_id = i + 1;
+		table->philos[i].eat_count = 0;
+		table->philos[i].time_meal = table->start_time;
+		table->philos[i].left_fork = &table->forks[i];
+		table->philos[i].right_fork = &table->forks[(i + 1) % table->num_philo];
+		
+
+		
+		i++; 
+	}
+
+	pthread_t   	thread; //thread
+	int         	philo_id; //philo ID 
+	int 			flg_is_alive; //flag to sinalize of philo died (not shure if needed!)
+	int				eat_count; //count the number of meals eated and control las program argument (when given)
+	long long		time_meal; //time from last meal (to check if he died)
+	pthread_mutex_t	*right_fork;  //right fork (pointer) to mutex the philo controls
+	pthread_mutex_t *left_fork; //left fork (pointer) to mutex the philo controls
+	t_table			*table; //pointer to access table struct
 	//initialize philosophers as threads (usind a t_philo struct) [don't forget to assign them ids (i+1), forks and staarting times]
 }
 
 void	set_table(t_table *table, int argc, char **argv)
 {
-    if (argc != 5 || argc != 6)
+    if (argc != 5 && argc != 6)
         error_exit("Wrong number of arguments");
+	else
+		check_args(argv); 
     table->num_philo = ft_atoi(argv[1]);
 	table->time_die = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);
 	table->time_sleep = ft_atoi(argv[4]);
-	if (argv == 6)
-		table->meals_required = ft_atoi(argv[5]);
+	if (argc == 6)
+		table->num_meals_required = ft_atoi(argv[5]);
 	else
-		table->meals_required = -1;
+		table->num_meals_required = -1;
 	table->end_meal_flg = 0;
-	if (table->num_philo < 1 || table->time_die < 1 || table->time_eat < 1 \
-	|| table->time_sleep < 1 || (argc == 6 && table->meals_required < 1))
-		error_exit("Invalid arguments"); 
 }
 
 int main(int argc, char **argv)
