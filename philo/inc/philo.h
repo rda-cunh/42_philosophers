@@ -63,7 +63,6 @@ int		ft_atoi(const char *str);
 //must add a function to allow philos to sleep: void	ft_usleep(long long time);
 
 //exit.c
-int		error_exit(char *error_msg); 
-
+int		error_exit(char *error_msg);
 
 #endif

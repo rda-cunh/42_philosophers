@@ -12,36 +12,42 @@
 
 #include "../inc/philo.h"
 
+void	summon_forks(t_table *table)
+{
+	int i;
+
+	i = 0;
+	table->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * table->num_philo)
+	if (!table->forks)
+		error_exit("Failed to allocate memory for forks.");
+	while(i < table->num_philo)
+	{
+		
+	}
+}
+
+
 void	summon_philos(t_table *table)
 {
 	int i;
 
 	i = 0; 
-	table->philos = (t_philo *)malloc(sizeof(t_philo) * (table->num_philo + 1));
+	table->philos = (t_philo *)malloc(sizeof(t_philo) * (table->num_philo));
 	if (!table->philos)
-		return (NULL);
+		exit_error("Failed to allocate memory for philosophers.\n");
 	while(i < table->num_philo)
 	{
 		table->philos[i].philo_id = i + 1;
+		table->philos[i].flg_is_alive = 1; 
 		table->philos[i].eat_count = 0;
 		table->philos[i].time_meal = table->start_time;
 		table->philos[i].left_fork = &table->forks[i];
 		table->philos[i].right_fork = &table->forks[(i + 1) % table->num_philo];
-		
-
-		
+		table->philos[i].table = table; 
+		if(pthtead_create(&table->philos[i].thread, NULL, philo_routine, &table_philos[i]) != 0)
+			error_exit("Failed to create thread.\n")
 		i++; 
 	}
-
-	pthread_t   	thread; //thread
-	int         	philo_id; //philo ID 
-	int 			flg_is_alive; //flag to sinalize of philo died (not shure if needed!)
-	int				eat_count; //count the number of meals eated and control las program argument (when given)
-	long long		time_meal; //time from last meal (to check if he died)
-	pthread_mutex_t	*right_fork;  //right fork (pointer) to mutex the philo controls
-	pthread_mutex_t *left_fork; //left fork (pointer) to mutex the philo controls
-	t_table			*table; //pointer to access table struct
-	//initialize philosophers as threads (usind a t_philo struct) [don't forget to assign them ids (i+1), forks and staarting times]
 }
 
 void	set_table(t_table *table, int argc, char **argv)
