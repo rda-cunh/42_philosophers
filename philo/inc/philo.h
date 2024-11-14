@@ -51,11 +51,15 @@ typedef struct  s_table
 //funtions
 //main.c
 void	set_table(t_table *table, int argc, char **argv);
-void	summon_philos(t_table s_table); 
+void	summon_philos(t_table *table);
+void	summon_forks(t_table *table);
 
 //check_args.c
 int	isnumber(char *arg);
 int	check_args(char **argv);
+
+//simulation.c
+void	start_simulation(t_table *table); 
 
 //utils.c
 int		ft_atoi(const char *str);

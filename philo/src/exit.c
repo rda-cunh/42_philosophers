@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//clean and exit function
+//exit function in case of error
 int	error_exit(char *error_msg)
 {
 	printf(error_msg);
