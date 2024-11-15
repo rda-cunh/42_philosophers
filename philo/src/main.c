@@ -16,14 +16,16 @@ int main(int argc, char **argv)
 {
     t_table	table; 
 
+    if (argc != 5 && argc != 6)
+        error_exit("Wrong number of arguments", table);
+    check_args(argv); 
 	set_table(&table, argc, argv);
 	summon_philos(&table);
 	summon_forks(&table); 
     fork_assignment(&table);
 	start_simulation(&table); 
 
-//initialize mutexes to control the access to each fork and associate each philosoper with two adjacent threads
-        
+      
 //initialize the simulation loop:
     // 1. Eating: each philosopher locks two mutexes (forks) and simulates eating for time_to_eat milliseconds
     // 2. Sleeping: each philosopher "puts down" both forks (unlocks mutexes) and sleeps for time_to_sleep milliseconds
@@ -31,7 +33,6 @@ int main(int argc, char **argv)
     //track each philosopher last meal time. After each action, check if the philosopher's time without eating exceeds time_to_die. If so, log their death and terminate simulation
 
 //Must have a function to keep the log and print alls the timestamps ans messages (Synchronize logging (e.g. mutex) to avoid log message overlap, ensuring a clear output
-//clean um functions that destoy_mutexes and free_resources
-
+//clean up functions that destoy_mutexes and free_resources
     return (0); 
 }

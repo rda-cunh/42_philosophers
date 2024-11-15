@@ -1,4 +1,7 @@
-//header missing
+//header 
+
+#include "../inc/philo.h"
+
 static void    philo_routine(void *arg)
 {
     t_philo *philo = (t_filo *)arg; 

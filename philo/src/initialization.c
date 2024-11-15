@@ -1,5 +1,7 @@
 //header missing
 
+#include "../inc/philo.h"
+
 void    fork_assignment(t_table *table)
 {
     int i;
@@ -20,7 +22,7 @@ void	summon_forks(t_table *table)
 	i = 0;
 	table->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * table->num_philo)
 	if (!table->forks)
-		error_exit("Failed to allocate memory for forks.\n");
+		error_exit("Failed to allocate memory for forks.\n", table);
 	while(i < table->num_philo)
 	{
 		if (pthread_mutex_init(&table->forks[i]) != 0)
@@ -28,7 +30,7 @@ void	summon_forks(t_table *table)
 			while (--i >= 0)
 				pthread_mutex_destroy(&table->forks[i]);
 			free(table->forks);
-			error_exit("Failed to initialize fork mutex.\n");
+			error_exit("Failed to initialize fork mutex.\n", table);
 		}
 		i++;
 	}
@@ -41,7 +43,7 @@ void	summon_philos(t_table *table)
 	i = 0; 
 	table->philos = (t_philo *)malloc(sizeof(t_philo) * (table->num_philo));
 	if (!table->philos)
-		exit_error("Failed to allocate memory for philosophers.\n");
+		error_exit("Failed to allocate memory for philosophers.\n", table);
 	while(i < table->num_philo)
 	{
 		table->philos[i].philo_id = i + 1;
@@ -52,17 +54,13 @@ void	summon_philos(t_table *table)
 		table->philos[i].right_fork = &table->forks[(i + 1) % table->num_philo];
 		table->philos[i].table = table; 
 		if(pthtead_create(&table->philos[i].thread, NULL, philo_routine, &table_philos[i]) != 0)
-			error_exit("Failed to create thread.\n")
+			error_exit("Failed to create thread.\n", table)
 		i++; 
 	}
 }
 
 void	set_table(t_table *table, int argc, char **argv)
 {
-    if (argc != 5 && argc != 6)
-        error_exit("Wrong number of arguments");
-	else
-		check_args(argv); 
     table->num_philo = ft_atoi(argv[1]);
 	table->time_die = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);

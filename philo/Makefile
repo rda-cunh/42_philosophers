@@ -13,8 +13,8 @@
 NAME = philo
 
 SRC_DIR = src
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/check_args.c $(SRC_DIR)/utils.c \
-		$(SRC_DIR)/exit.c 			 
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/check_args.c $(SRC_DIR)/inialization.c \
+		$(SRC_DIR)/simulation.c $(SRC_DIR)/exit.c $(SRC_DIR)/utils.c			 
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc

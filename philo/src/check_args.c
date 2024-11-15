@@ -20,24 +20,26 @@ int	isnumber(char *arg)
 	while (arg[i] != '\0')
 	{
 		if (arg[i] < '0' || arg[i] > '9')
-			return (1);
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	check_args(char **argv)
 {
+	if (!argv[1] || !argv[2] || !argv[3] || !argv[4])
+    	error_exit("Required arguments are missing.\n", NULL);
 	if (ft_atoi(argv[1]) > PHILO_MAX || ft_atoi(argv[1]) <= 0
-		|| isnumber(argv[1]) == 1)
-		exit_error("Invalid philo number\n");
-	if (ft_atoi(argv[2]) <= 0 || isnumber(argv[2]) == 1)
-		exit_error("Invalid time to die\n");
-	if (ft_atoi(argv[3]) <= 0 || isnumber(argv[3]) == 1)
-		exit_error ("Invalid time to eat\n");
-	if (ft_atoi(argv[4]) <= 0 || isnumber(argv[4]) == 1)
-		exit_error ("Invalid time to sleep\n");
-	if (argv[5] && (ft_atoi(argv[5]) < 0 || isnumber(argv[5]) == 1))
-		exit_error ("Invalid number of times each philosopher must eat\n");
+		|| !isnumber(argv[1]))
+		error_exit("Invalid philo number.\n", NULL);
+	if (ft_atoi(argv[2]) <= 0 || !isnumber(argv[2]))
+		error_exit("Invalid time to die.\n", NULL);
+	if (ft_atoi(argv[3]) <= 0 || !isnumber(argv[3]))
+		error_exit("Invalid time to eat.\n", NULL);
+	if (ft_atoi(argv[4]) <= 0 || !isnumber(argv[4]))
+		error_exit("Invalid time to sleep.\n", NULL);
+	if (argv[5] && (!isnumber(argv[5]) || ft_atoi(argv[5]) <= 0)))
+		error_exit("Invalid number of times each philosopher must eat.\n", NULL);
 	return (0);
 }

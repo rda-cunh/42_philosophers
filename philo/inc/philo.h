@@ -49,17 +49,18 @@ typedef struct  s_table
 }   t_table;
 
 //funtions
-//main.c
-void	set_table(t_table *table, int argc, char **argv);
+//initialization.c
+void	fork_assignment(t_table *table);
 void	summon_philos(t_table *table);
 void	summon_forks(t_table *table);
+void	set_table(t_table *table, int argc, char **argv);
 
 //check_args.c
 int	isnumber(char *arg);
 int	check_args(char **argv);
 
 //simulation.c
-void	start_simulation(t_table *table); 
+void	start_simulation(t_table *table);
 
 //utils.c
 int		ft_atoi(const char *str);

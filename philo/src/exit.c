@@ -10,10 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//exit function in case of error
-int	error_exit(char *error_msg)
+#include "../inc/philo.h"
+
+void	destroy_mutexes(t_table *table)
 {
-	printf(error_msg);
-	//must add structs and memory clean 
-	return (1);  
+	int i;
+
+	i = 0;
+	while (i < table->num_philo)
+	{
+		pthread_mutex_destroy(&table->forks[i]);
+		i++;
+	}
+}
+
+void	clean_data(t_table *table)
+{
+	free(table->forks);
+	free(table->philos); 
+}
+
+//exit function in case of error
+int	error_exit(char *msg, t_table *table)
+{
+	if (msg)
+		printf("%s", msg);
+	if (table->forks && table->philos)
+	{
+		destroy_mutexes(table);
+		clean_data(table);
+	}
+	exit(1);  
 }
