@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:19:55 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/08 18:05:03 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:58:37 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	destroy_mutexes(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < table->num_philo)
@@ -27,7 +27,7 @@ void	destroy_mutexes(t_table *table)
 void	clean_data(t_table *table)
 {
 	free(table->forks);
-	free(table->philos); 
+	free(table->philos);
 }
 
 //exit function in case of error
@@ -40,5 +40,5 @@ int	error_exit(char *msg, t_table *table)
 		destroy_mutexes(table);
 		clean_data(table);
 	}
-	exit(1);  
+	exit(1);
 }

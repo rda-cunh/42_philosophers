@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/12 01:35:40 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/16 00:57:03 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	isnumber(char *arg);
 int	check_args(char **argv);
 
 //simulation.c
+void	philo_routine(void *arg); 
 void	start_simulation(t_table *table);
 
 //utils.c
@@ -68,6 +69,6 @@ int		ft_atoi(const char *str);
 //must add a function to allow philos to sleep: void	ft_usleep(long long time);
 
 //exit.c
-int		error_exit(char *error_msg);
+int	error_exit(char *msg, t_table *table);
 
 #endif

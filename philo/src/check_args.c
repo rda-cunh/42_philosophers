@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:09:18 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/12 01:27:07 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/16 00:55:15 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	isnumber(char *arg)
 int	check_args(char **argv)
 {
 	if (!argv[1] || !argv[2] || !argv[3] || !argv[4])
-    	error_exit("Required arguments are missing.\n", NULL);
+		error_exit("Required arguments are missing.\n", NULL);
 	if (ft_atoi(argv[1]) > PHILO_MAX || ft_atoi(argv[1]) <= 0
 		|| !isnumber(argv[1]))
 		error_exit("Invalid philo number.\n", NULL);
@@ -39,7 +39,7 @@ int	check_args(char **argv)
 		error_exit("Invalid time to eat.\n", NULL);
 	if (ft_atoi(argv[4]) <= 0 || !isnumber(argv[4]))
 		error_exit("Invalid time to sleep.\n", NULL);
-	if (argv[5] && (!isnumber(argv[5]) || ft_atoi(argv[5]) <= 0)))
-		error_exit("Invalid number of times each philosopher must eat.\n", NULL);
+	if (argv[5] && (!isnumber(argv[5]) || ft_atoi(argv[5]) <= 0))
+		error_exit("Invalid number of times each philo must eat.\n", NULL);
 	return (0);
 }

@@ -1,8 +1,18 @@
-//header 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simulation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
+/*   Updated: 2024/11/16 00:56:47 by rda-cunh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-static void    philo_routine(void *arg)
+void	philo_routine(void *arg)
 {
     t_philo *philo = (t_filo *)arg; 
 
