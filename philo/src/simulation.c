@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 04:05:35 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:38:23 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 
-	while (1)
+	while (1) //verify if there is a dead condition (every step of the simulation)
 	{
 		//thinking
 		print_action(philo, "is thinking");
