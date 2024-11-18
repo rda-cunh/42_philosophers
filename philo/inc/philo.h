@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 02:55:11 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:17:43 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@
 
 # define PHILO_MAX 200
 
-//structs (must check during implementation!)
-typedef struct  s_philo
+
+//structs
+
+typedef struct s_table	t_table;
+
+typedef struct s_philo
 {
 	pthread_t   	thread; //thread
 	int         	philo_id; //philo ID 
@@ -33,7 +37,7 @@ typedef struct  s_philo
 	pthread_mutex_t	*right_fork;  //right fork (pointer) to mutex the philo controls
 	pthread_mutex_t *left_fork; //left fork (pointer) to mutex the philo controls
 	t_table			*table; //pointer to access table struct
-}   t_philo; 
+}   t_philo;
 
 typedef struct  s_table
 {
@@ -60,14 +64,14 @@ int		isnumber(char *arg);
 int		check_args(char **argv);
 
 //simulation.c
-void	philo_routine(void *arg);
+void	*philo_routine(void *arg);
 void	*monitor_simulation(void *arg);
 void	start_simulation(t_table *table);
 
 //utils.c
 void	print_action(t_philo *philo, const char *action);
 int		ft_usleep(size_t milliseconds);
-long long	get_currrent_time(void);
+long long	get_current_time(void);
 int		ft_atoi(const char *str);
 
 //exit.c

@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:19:55 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 02:24:36 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:50:09 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,24 @@ void	destroy_mutexes(t_table *table, int count)
 	i = 0;
 	while (i < count)
 	{
-		pthread_mutex_destroy(&table->forks[i]);
+		if (&table->forks[i])
+			pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
 }
 
 void	clean_data(t_table *table)
 {
-	free(table->forks);
-	free(table->philos);
+	if (table->forks)
+		free(table->forks);
+	if (table->philos)
+		free(table->philos);
 }
 
 //join philo threads, destroy mutexes and free alocated memory
 void	end_simulation(t_table *table)
 {
-	joint_threads(table);
+	join_threads(table);
 	destroy_mutexes(table, table->num_philo);
 	clean_data(table);
 }

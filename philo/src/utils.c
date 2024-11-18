@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:59:41 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 02:44:10 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:21:45 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_action(t_philo *philo, const char *action)
 	pthread_mutex_lock(&print_mutex);
 	if (!philo->table->end_meal_flg)
 	{
-		current_time = get_currrent_time() - philo->table->start_time;
+		current_time = get_current_time() - philo->table->start_time;
 		printf("%lld %d %s\n", current_time, philo->philo_id, action);
 	}
 	pthread_mutex_unlock(&print_mutex);
@@ -39,7 +39,7 @@ int	ft_usleep(size_t milliseconds)
 }
 
 //gets the current time in milliseconds
-long long	get_currrent_time(void)
+long long	get_current_time(void)
 {
 	struct timeval	timeval;
 

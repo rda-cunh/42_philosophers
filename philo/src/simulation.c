@@ -6,13 +6,13 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 02:32:06 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 04:05:35 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	philo_routine(void *arg)
+void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
@@ -24,6 +24,15 @@ void	philo_routine(void *arg)
 		print_action(philo, "is thinking");
 
 		//try to eat
+
+		//just to debug - INIT - 
+		if (!philo->left_fork || !philo->right_fork)
+		{
+    		printf("Philosopher %d has invalid fork pointers.\n", philo->philo_id);
+    		return NULL;
+		}
+		//just to debug - END - 
+
 		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);

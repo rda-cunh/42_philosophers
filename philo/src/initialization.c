@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:50:39 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/17 17:16:30 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 03:08:30 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	fork_assignment(t_table *table)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < table->num_philo)
@@ -27,7 +27,7 @@ void	fork_assignment(t_table *table)
 
 void	summon_forks(t_table *table)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	table->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) \
@@ -48,7 +48,7 @@ void	summon_forks(t_table *table)
 
 void	summon_philos(t_table *table)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	table->philos = (t_philo *)malloc(sizeof(t_philo) * (table->num_philo));
