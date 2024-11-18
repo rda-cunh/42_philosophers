@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/16 00:56:47 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/18 02:32:06 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,82 @@
 
 void	philo_routine(void *arg)
 {
-    t_philo *philo = (t_filo *)arg; 
+	t_philo	*philo;
 
-    while (!table->end_meal_flag)
-    {
-        philo_eat(philo);
-        philo_spleep_thing(philo);
-        if (check_dead(philo)) //evaluate if this is the best solution against having a thread to control if some philo died
-            break ; 
-    }
-    return (NULL); 
+	philo = (t_philo *)arg;
+
+	while (1)
+	{
+		//thinking
+		print_action(philo, "is thinking");
+
+		//try to eat
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, "has taken a fork");
+
+		print_action(philo, "is eating");
+		philo->time_meal = get_current_time();
+		ft_usleep(philo->table->time_eat);
+		philo->eat_count++;
+
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+
+		//sleeping
+		print_action(philo, "is sleeping");
+		ft_usleep(philo->table->time_sleep);
+	}
+	return (NULL);
+}
+
+void	*monitor_simulation(void *arg)
+{
+	unsigned int	i;
+	t_table			*table;
+
+	i = 0;
+	table = (t_table *)arg;
+	while (1)
+	{
+		while (i < table->num_philo)
+		{
+			if (get_current_time() - table->philos[i].time_meal \
+			> table->time_die)
+			{
+				print_action(&table->philos[i], "died"); //to print when philo died
+				table->end_meal_flg = 1;
+				return (NULL);
+			}
+			i++;
+		}
+	}
 }
 
 void	start_simulation(t_table *table)
 {
-    int i;
-    struct timeval tv;
+	unsigned int	i;
+	pthread_t		monitor_thread;
 
-    i = 0; 
-    gettimeofday(&tv, NULL);
-    table->star_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-    while(i < table->num_philo)
-    {
-        table->philos[i].time_meal = table->start_time;
-        i++; 
-    }
-    //create a monitor thread
-    if (pthread_create(&table->philos[i].thread, NULL, philo_routine, &table->philos[i]) != 0)
-        error_exit("Failed to create monitor thread.\n");
-    philo_routine(&table);
+	i = 0;
+	table->start_time = get_current_time();
+	while (i < table->num_philo)
+	{
+		table->philos[i].time_meal = table->start_time;
+		if (pthread_create(&table->philos[i].thread, NULL, philo_routine, \
+		&table->philos[i]) != 0)
+		{
+			while (i > 0)
+			{
+				i--;
+				pthread_join(table->philos[i].thread, NULL);
+			}
+			error_exit("Failed to create philosopher thread.\n", table);
+		}
+		i++;
+	}
+	if (pthread_create(&monitor_thread, NULL, monitor_simulation, table) != 0)
+		error_exit("Failed to create monitor thread.\n", table);
+	pthread_join(monitor_thread, NULL);
 }
