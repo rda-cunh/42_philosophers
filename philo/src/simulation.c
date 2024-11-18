@@ -62,17 +62,19 @@ void	*monitor_simulation(void *arg)
 	table = (t_table *)arg;
 	while (1)
 	{
+		i = 0; 
 		while (i < table->num_philo)
 		{
 			if (get_current_time() - table->philos[i].time_meal \
 			> table->time_die)
 			{
-				print_action(&table->philos[i], "died"); //to print when philo died
+				print_action(&table->philos[i], "died");
 				table->end_meal_flg = 1;
 				return (NULL);
 			}
 			i++;
 		}
+		ft_usleep(1000); //prevent busy waiting(check arguments for project defense!)
 	}
 }
 

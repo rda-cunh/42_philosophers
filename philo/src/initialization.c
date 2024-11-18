@@ -60,9 +60,6 @@ void	summon_philos(t_table *table)
 		table->philos[i].flg_is_alive = 1;
 		table->philos[i].eat_count = 0;
 		table->philos[i].table = table;
-		if (pthread_create(&table->philos[i].thread, NULL, philo_routine, \
-		&table->philos[i]) != 0)
-			error_exit("Failed to create thread.\n", table);
 		i++;
 	}
 }
