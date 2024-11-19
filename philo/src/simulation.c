@@ -12,6 +12,33 @@
 
 #include "../inc/philo.h"
 
+void	philo_think(t_philo *philo)
+{
+	print_action(philo, "is thinking");
+}
+
+void	philo_eat(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_action(philo, "has taken a fork");
+	pthread_mutex_lock(philo->right_fork);
+	print_action(philo, "has taken a fork");
+
+	print_action(philo, "is eating");
+	philo->time_meal = get_current_time();
+	ft_usleep(philo->table->time_eat);
+	philo->eat_count++;
+
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+}
+
+void	philo_sleep(t_philo *philo)
+{
+	print_action(philo, "is sleeping");
+	ft_usleep(philo->table->time_sleep);
+}
+
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
@@ -20,30 +47,15 @@ void	*philo_routine(void *arg)
 
 	while (!philo->table->end_meal_flg)
 	{
-		//thinking
-		print_action(philo, "is thinking");
-
-		//try to eat
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-
-		print_action(philo, "is eating");
-		philo->time_meal = get_current_time();
-		ft_usleep(philo->table->time_eat);
-		philo->eat_count++;
-
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-
-		// If meals required are completed, break out of loop
-		if (philo->table->num_meals_required > 0 && philo->eat_count >= philo->table->num_meals_required)
+		philo_think(philo);
+		if (philo->table->end_meal_flg)
 			break ;
 
-		//sleeping
-		print_action(philo, "is sleeping");
-		ft_usleep(philo->table->time_sleep);
+		philo_eat(philo);
+		if (philo->table->end_meal_flg)
+			break ;
+
+		philo_sleep(philo);
 	}
 	return (NULL);
 }
@@ -112,4 +124,6 @@ void	start_simulation(t_table *table)
 	if (pthread_create(&monitor_thread, NULL, monitor_simulation, table) != 0)
 		error_exit("Failed to create monitor thread.\n", table);
 	pthread_join(monitor_thread, NULL);
+
+	//evaluate to join philo threads here istead of in main (instead of end_simulation)
 }

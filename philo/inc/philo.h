@@ -64,6 +64,9 @@ int			isnumber(char *arg);
 int			check_args(char **argv);
 
 //simulation.c
+void		philo_think(t_philo *philo);
+void		philo_eat(t_philo *philo);
+void		philo_sleep(t_philo *philo);
 void		*philo_routine(void *arg);
 void		*monitor_simulation(void *arg);
 void		start_simulation(t_table *table);
