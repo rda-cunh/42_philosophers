@@ -6,25 +6,25 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 03:17:43 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/19 00:32:02 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+//libraries
 # include <stdio.h> //printf
 # include <stdlib.h> //memory allocation
 # include <string.h> //memset
-# include <unistd.h> //write  and usleep
+# include <unistd.h> //write and usleep
 # include <sys/time.h> //gettimeoftheday
 # include <pthread.h> //thread functions
 
+//macros
 # define PHILO_MAX 200
 
-
 //structs
-
 typedef struct s_table	t_table;
 
 typedef struct s_philo
@@ -32,7 +32,7 @@ typedef struct s_philo
 	pthread_t   	thread; //thread
 	int         	philo_id; //philo ID 
 	int 			flg_is_alive; //flag to sinalize of philo died (not shure if needed!)
-	int				eat_count; //count the number of meals eated and control las program argument (when given)
+	unsigned int	eat_count; //count the number of meals eated and control las program argument (when given)
 	long long		time_meal; //time from last meal (to check if he died)
 	pthread_mutex_t	*right_fork;  //right fork (pointer) to mutex the philo controls
 	pthread_mutex_t *left_fork; //left fork (pointer) to mutex the philo controls
@@ -54,31 +54,31 @@ typedef struct  s_table
 
 //funtions
 //initialization.c
-void	fork_assignment(t_table *table);
-void	summon_forks(t_table *table);
-void	summon_philos(t_table *table);
-void	set_table(t_table *table, int argc, char **argv);
+void		fork_assignment(t_table *table);
+void		summon_forks(t_table *table);
+void		summon_philos(t_table *table);
+void		set_table(t_table *table, int argc, char **argv);
 
 //check_args.c
-int		isnumber(char *arg);
-int		check_args(char **argv);
+int			isnumber(char *arg);
+int			check_args(char **argv);
 
 //simulation.c
-void	*philo_routine(void *arg);
-void	*monitor_simulation(void *arg);
-void	start_simulation(t_table *table);
+void		*philo_routine(void *arg);
+void		*monitor_simulation(void *arg);
+void		start_simulation(t_table *table);
 
 //utils.c
-void	print_action(t_philo *philo, const char *action);
-int		ft_usleep(size_t milliseconds);
+void		print_action(t_philo *philo, const char *action);
+int			ft_usleep(size_t milliseconds);
 long long	get_current_time(void);
-int		ft_atoi(const char *str);
+int			ft_atoi(const char *str);
 
 //exit.c
-void	join_threads(t_table *table);
-void	destroy_mutexes(t_table *table, int count);
-void	clean_data(t_table *table);
-void	end_simulation(t_table *table); 
-int		error_exit(char *msg, t_table *table);
+void		join_threads(t_table *table);
+void		destroy_mutexes(t_table *table, int count);
+void		clean_data(t_table *table);
+void		end_simulation(t_table *table);
+int			error_exit(char *msg, t_table *table);
 
 #endif

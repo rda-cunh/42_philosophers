@@ -6,7 +6,7 @@
 #    By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 23:22:38 by rda-cunh          #+#    #+#              #
-#    Updated: 2024/11/18 03:27:57 by rda-cunh         ###   ########.fr        #
+#    Updated: 2024/11/18 22:56:11 by rda-cunh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/check_args.c $(SRC_DIR)/initialization.c \
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread -g
+CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread
 RM = rm -rf
 
 all: $(NAME)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 18:38:23 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/19 01:04:06 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,12 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 
-	while (1) //verify if there is a dead condition (every step of the simulation)
+	while (!philo->table->end_meal_flg)
 	{
 		//thinking
 		print_action(philo, "is thinking");
 
 		//try to eat
-
-		//just to debug - INIT - 
-		if (!philo->left_fork || !philo->right_fork)
-		{
-    		printf("Philosopher %d has invalid fork pointers.\n", philo->philo_id);
-    		return NULL;
-		}
-		//just to debug - END - 
-
 		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
@@ -46,6 +37,10 @@ void	*philo_routine(void *arg)
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 
+		// If meals required are completed, break out of loop
+		if (philo->table->num_meals_required > 0 && philo->eat_count >= philo->table->num_meals_required)
+			break ;
+
 		//sleeping
 		print_action(philo, "is sleeping");
 		ft_usleep(philo->table->time_sleep);
@@ -56,15 +51,17 @@ void	*philo_routine(void *arg)
 void	*monitor_simulation(void *arg)
 {
 	unsigned int	i;
+	unsigned int	fat_philos;
 	t_table			*table;
 
-	i = 0;
 	table = (t_table *)arg;
 	while (1)
 	{
-		i = 0; 
+		i = 0;
+		fat_philos = 0; 
 		while (i < table->num_philo)
 		{
+			//check if a philo died
 			if (get_current_time() - table->philos[i].time_meal \
 			> table->time_die)
 			{
@@ -72,7 +69,19 @@ void	*monitor_simulation(void *arg)
 				table->end_meal_flg = 1;
 				return (NULL);
 			}
+			//check if a philo has eaten enough meals
+			if (table->num_meals_required > 0 && \
+			table->philos[i].eat_count >= table->num_meals_required)
+			{
+				fat_philos++;
+			}
 			i++;
+		}
+		//if all philos have eaten enough meals, end the simulation
+		if (table->num_meals_required > 0 && fat_philos == table->num_philo)
+		{
+			table->end_meal_flg = 1;
+			return (NULL);
 		}
 		ft_usleep(1000); //prevent busy waiting(check arguments for project defense!)
 	}
