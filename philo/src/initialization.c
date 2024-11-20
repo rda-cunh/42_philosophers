@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:50:39 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 03:08:30 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:29:01 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,9 @@ void	set_table(t_table *table, int argc, char **argv)
 	else
 		table->num_meals_required = -1;
 	table->end_meal_flg = 0;
+	if (pthread_mutex_init(&table->print_mutex, NULL) != 0 || \
+		pthread_mutex_init(&table->death_mutex, NULL) != 0 || \
+		pthread_mutex_init(&table->meal_mutex, NULL))
+		error_exit("Failed to initialize mutexes", table);
 }
+

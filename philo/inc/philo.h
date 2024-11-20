@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/19 00:32:02 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:23:34 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ typedef struct  s_table
     long long		start_time; //start time timestamp (begginning of simulations)
 	t_philo			*philos; //an array of t_philo to track the philosophers
 	pthread_mutex_t *forks; //an array to the store the mutexes referenced in my philo struct
+	pthread_mutex_t	print_mutex; //protects printing calls
+	pthread_mutex_t	death_mutex; //protects end_meal_flag and the way death philo is checked
+	pthread_mutex_t meal_mutex; //protects eat_count and meal time updates
 }   t_table;
 
 //funtions

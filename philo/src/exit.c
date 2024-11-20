@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:19:55 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 18:35:58 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:00:41 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	destroy_mutexes(t_table *table, int count)
 		pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&table->print_mutex);
+	pthread_mutex_destroy(&table->death_mutex);
+	pthread_mutex_destroy(&table->meal_mutex);
 }
 
 void	clean_data(t_table *table)

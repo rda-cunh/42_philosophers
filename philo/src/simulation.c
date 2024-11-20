@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/20 01:04:06 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:04:37 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,33 @@ void	philo_eat(t_philo *philo)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has taken a fork");
+		ft_usleep(philo->table->time_die); // Simulate waiting until death
 		pthread_mutex_unlock(philo->left_fork);
 		return ;
 	}
-	 // Normal case for multiple philosophers
-	pthread_mutex_lock(philo->left_fork);
-	print_action(philo, "has taken a fork");
-	pthread_mutex_lock(philo->right_fork);
-	print_action(philo, "has taken a fork");
+	// Normal case for multiple philosophers
+	// Always lock forks in ascending order to prevent deadlock
+    if (philo->left_fork < philo->right_fork)
+    {
+        pthread_mutex_lock(philo->left_fork);
+        print_action(philo, "has taken a fork");
+        pthread_mutex_lock(philo->right_fork);
+        print_action(philo, "has taken a fork");
+    }
+    else
+    {
+        pthread_mutex_lock(philo->right_fork);
+        print_action(philo, "has taken a fork");
+        pthread_mutex_lock(philo->left_fork);
+        print_action(philo, "has taken a fork");
+    }
 
+	pthread_mutex_lock(&philo->table->meal_mutex);
 	print_action(philo, "is eating");
 	philo->time_meal = get_current_time();
 	ft_usleep(philo->table->time_eat);
 	philo->eat_count++;
+	pthread_mutex_unlock(&philo->table->meal_mutex);
 
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
@@ -63,10 +77,12 @@ void	*philo_routine(void *arg)
 	while (!philo->table->end_meal_flg)
 	{
 		philo_think(philo);
+
 		if (philo->table->end_meal_flg)
 			break ;
 
 		philo_eat(philo);
+
 		if (philo->table->end_meal_flg)
 			break ;
 
@@ -77,40 +93,49 @@ void	*philo_routine(void *arg)
 
 void	*monitor_simulation(void *arg)
 {
+	t_table			*table;
 	unsigned int	i;
 	unsigned int	fat_philos;
-	t_table			*table;
+	long long		time_from_meal;
+	unsigned int	current_meals;
 
 	table = (t_table *)arg;
 	while (1)
 	{
 		i = 0;
-		fat_philos = 0; 
+		fat_philos = 0;
 		while (i < table->num_philo)
 		{
-			//check if a philo died
-			if (get_current_time() - table->philos[i].time_meal \
-			>= table->time_die)
+			// Check if a philosopher has died
+			pthread_mutex_lock(&table->meal_mutex);
+			time_from_meal = get_current_time() - table->philos[i].time_meal;
+			current_meals = table->philos[i].eat_count;
+			pthread_mutex_unlock(&table->meal_mutex);
+
+			if (time_from_meal >= table->time_die)
 			{
 				print_action(&table->philos[i], "died");
+				pthread_mutex_lock(&table->death_mutex);
 				table->end_meal_flg = 1;
+				pthread_mutex_unlock(&table->death_mutex);
 				return (NULL);
 			}
-			//check if a philo has eaten enough meals
-			if (table->num_meals_required > 0 && \
-			table->philos[i].eat_count >= table->num_meals_required)
-			{
+
+			// Check if a philosopher has eaten enough meals
+			if (table->num_meals_required > 0 && current_meals >= table->num_meals_required)
 				fat_philos++;
-			}
 			i++;
 		}
-		//if all philos have eaten enough meals, end the simulation
+
+		// End simulation if all philosophers are full
 		if (table->num_meals_required > 0 && fat_philos == table->num_philo)
 		{
+			pthread_mutex_lock(&table->death_mutex);
 			table->end_meal_flg = 1;
+			pthread_mutex_unlock(&table->death_mutex);
 			return (NULL);
 		}
-		ft_usleep(100); //prevent busy waiting(check arguments for project defense!)
+		ft_usleep(100); // Prevent busy waiting
 	}
 }
 

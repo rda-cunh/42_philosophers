@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:59:41 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/18 03:21:45 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:48:05 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 void	print_action(t_philo *philo, const char *action)
 {
-	static pthread_mutex_t	print_mutex = PTHREAD_MUTEX_INITIALIZER;
 	long long				current_time;
 
-	pthread_mutex_lock(&print_mutex);
+	pthread_mutex_lock(&philo->table->print_mutex);
 	if (!philo->table->end_meal_flg)
 	{
 		current_time = get_current_time() - philo->table->start_time;
 		printf("%lld %d %s\n", current_time, philo->philo_id, action);
 	}
-	pthread_mutex_unlock(&print_mutex);
+		pthread_mutex_unlock(&philo->table->print_mutex);
 }
 
 
