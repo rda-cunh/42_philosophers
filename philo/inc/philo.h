@@ -31,7 +31,6 @@ typedef struct s_philo
 {
 	pthread_t   	thread; //thread
 	int         	philo_id; //philo ID 
-	int 			flg_is_alive; //flag to sinalize of philo died (not shure if needed!)
 	unsigned int	eat_count; //count the number of meals eated and control las program argument (when given)
 	long long		time_meal; //time from last meal (to check if he died)
 	pthread_mutex_t	*right_fork;  //right fork (pointer) to mutex the philo controls

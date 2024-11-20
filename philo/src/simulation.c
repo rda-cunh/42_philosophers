@@ -164,6 +164,4 @@ void	start_simulation(t_table *table)
 	if (pthread_create(&monitor_thread, NULL, monitor_simulation, table) != 0)
 		error_exit("Failed to create monitor thread.\n", table);
 	pthread_join(monitor_thread, NULL);
-
-	//evaluate to join philo threads here istead of in main (instead of end_simulation)
 }

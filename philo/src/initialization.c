@@ -57,7 +57,6 @@ void	summon_philos(t_table *table)
 	while (i < table->num_philo)
 	{
 		table->philos[i].philo_id = i + 1;
-		table->philos[i].flg_is_alive = 1;
 		table->philos[i].eat_count = 0;
 		table->philos[i].table = table;
 		i++;
