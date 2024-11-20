@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/19 01:04:06 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:04:06 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ void	philo_think(t_philo *philo)
 
 void	philo_eat(t_philo *philo)
 {
+	// Special case for single philosopher
+	if (philo->table->num_philo == 1)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_unlock(philo->left_fork);
+		return ;
+	}
+	 // Normal case for multiple philosophers
 	pthread_mutex_lock(philo->left_fork);
 	print_action(philo, "has taken a fork");
 	pthread_mutex_lock(philo->right_fork);
@@ -44,7 +53,13 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-
+	// Special case for single philosopher
+	if (philo->table->num_philo == 1)
+	{
+		philo_think(philo);
+		philo_eat(philo);
+		return (NULL);
+	}
 	while (!philo->table->end_meal_flg)
 	{
 		philo_think(philo);
@@ -75,7 +90,7 @@ void	*monitor_simulation(void *arg)
 		{
 			//check if a philo died
 			if (get_current_time() - table->philos[i].time_meal \
-			> table->time_die)
+			>= table->time_die)
 			{
 				print_action(&table->philos[i], "died");
 				table->end_meal_flg = 1;
@@ -95,7 +110,7 @@ void	*monitor_simulation(void *arg)
 			table->end_meal_flg = 1;
 			return (NULL);
 		}
-		ft_usleep(1000); //prevent busy waiting(check arguments for project defense!)
+		ft_usleep(100); //prevent busy waiting(check arguments for project defense!)
 	}
 }
 
