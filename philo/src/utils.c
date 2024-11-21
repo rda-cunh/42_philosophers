@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:59:41 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/20 02:48:05 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/21 01:58:58 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,24 @@
 
 void	print_action(t_philo *philo, const char *action)
 {
-	long long				current_time;
+	long long	current_time;
 
-	pthread_mutex_lock(&philo->table->print_mutex);
-	if (!philo->table->end_meal_flg)
+	// Check if the simulation has ended, protected by death_mutex
+	pthread_mutex_lock(&philo->table->death_mutex);
+	if (philo->table->end_meal_flg)
 	{
-		current_time = get_current_time() - philo->table->start_time;
-		printf("%lld %d %s\n", current_time, philo->philo_id, action);
+		pthread_mutex_unlock(&philo->table->death_mutex);
+		return ;
 	}
-		pthread_mutex_unlock(&philo->table->print_mutex);
+	pthread_mutex_unlock(&philo->table->death_mutex);
+
+	// Print the action, protected by print_mutex
+	pthread_mutex_lock(&philo->table->print_mutex);
+	current_time = get_current_time() - philo->table->start_time;
+	printf("%lld %d %s\n", current_time, philo->philo_id, action);
+	pthread_mutex_unlock(&philo->table->print_mutex);
 }
+
 
 
 //improved version of sleep function

@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/20 03:04:37 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:06:14 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,38 @@ void	*philo_routine(void *arg)
 		philo_eat(philo);
 		return (NULL);
 	}
-	while (!philo->table->end_meal_flg)
+	while (1)
 	{
+		// Lock before reading end_meal_flg
+		pthread_mutex_lock(&philo->table->death_mutex);
+		if (philo->table->end_meal_flg)
+		{
+			pthread_mutex_unlock(&philo->table->death_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->table->death_mutex);
+
 		philo_think(philo);
 
+		// Lock before reading end_meal_flg
+		pthread_mutex_lock(&philo->table->death_mutex);
 		if (philo->table->end_meal_flg)
+		{
+			pthread_mutex_unlock(&philo->table->death_mutex);
 			break ;
+		}
+		pthread_mutex_unlock(&philo->table->death_mutex);
 
 		philo_eat(philo);
-
+		
+		// Lock before reading end_meal_flg
+		pthread_mutex_lock(&philo->table->death_mutex);
 		if (philo->table->end_meal_flg)
+		{
+			pthread_mutex_unlock(&philo->table->death_mutex);
 			break ;
+		}
+		pthread_mutex_unlock(&philo->table->death_mutex);
 
 		philo_sleep(philo);
 	}
