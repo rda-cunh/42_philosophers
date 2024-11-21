@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:19:55 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/20 02:00:41 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:28:18 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,14 @@ int	error_exit(char *msg, t_table *table)
 {
 	if (msg)
 		printf("%s", msg);
-	if (table->forks && table->philos)
+	if (table)
 	{
-		destroy_mutexes(table, table->num_philo);
-		clean_data(table);
+		if (table->forks && table->philos)
+		{
+			destroy_mutexes(table, table->num_philo);
+			clean_data(table);
+		}
 	}
-	exit(1);
+	exit(EXIT_FAILURE);
 }
-
 
