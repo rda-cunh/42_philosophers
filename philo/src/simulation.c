@@ -34,11 +34,6 @@ void	philo_eat(t_philo *philo)
     {
         pthread_mutex_lock(philo->left_fork);
         print_action(philo, "has taken a fork");
-		if (check_simulation_end(philo->table))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			return;
-		}
         pthread_mutex_lock(philo->right_fork);
         print_action(philo, "has taken a fork");
     }
@@ -46,11 +41,6 @@ void	philo_eat(t_philo *philo)
     {
         pthread_mutex_lock(philo->right_fork);
         print_action(philo, "has taken a fork");
-		if (check_simulation_end(philo->table))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			return;
-		}
         pthread_mutex_lock(philo->left_fork);
         print_action(philo, "has taken a fork");
     }
@@ -89,14 +79,15 @@ void	*philo_routine(void *arg)
 	}
 	while (1)
 	{
-		if (check_simulation_end(philo->table))
-			break ;
+        pthread_mutex_lock(&philo->table->death_mutex);
+        if (philo->table->end_meal_flg) // Check simulation end once per loop
+        {
+            pthread_mutex_unlock(&philo->table->death_mutex);
+            break;
+        }
+        pthread_mutex_unlock(&philo->table->death_mutex);
 		philo_think(philo);
-		if (check_simulation_end(philo->table))
-			break ;
 		philo_eat(philo);
-		if (check_simulation_end(philo->table))
-			break ;
 		philo_sleep(philo);
 	}
 	return (NULL);
@@ -108,7 +99,6 @@ void	*monitor_simulation(void *arg)
 	unsigned int	i;
 	unsigned int	fat_philos;
 	long long		time_from_meal;
-	unsigned int	current_meals;
 
 	table = (t_table *)arg;
 	while (1)
@@ -120,8 +110,6 @@ void	*monitor_simulation(void *arg)
 			// Check if a philosopher has died
 			pthread_mutex_lock(&table->meal_mutex);
 			time_from_meal = get_current_time() - table->philos[i].time_meal;
-			current_meals = table->philos[i].eat_count;
-			pthread_mutex_unlock(&table->meal_mutex);
 
 			if (time_from_meal >= table->time_die)
 			{
@@ -129,12 +117,14 @@ void	*monitor_simulation(void *arg)
 				pthread_mutex_lock(&table->death_mutex);
 				table->end_meal_flg = 1;
 				pthread_mutex_unlock(&table->death_mutex);
+				pthread_mutex_unlock(&table->meal_mutex);
 				return (NULL);
 			}
 
 			// Check if a philosopher has eaten enough meals
-			if (table->num_meals_required > 0 && current_meals >= table->num_meals_required)
+			if (table->num_meals_required > 0 && table->philos[i].eat_count >= table->num_meals_required)
 				fat_philos++;
+			pthread_mutex_unlock(&table->meal_mutex);
 			i++;
 		}
 
@@ -146,7 +136,7 @@ void	*monitor_simulation(void *arg)
 			pthread_mutex_unlock(&table->death_mutex);
 			return (NULL);
 		}
-		ft_usleep(50); // Prevent busy waiting
+		ft_usleep(100); // Prevent busy waiting
 	}
 }
 
