@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/20 01:23:34 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:30:33 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void		*monitor_simulation(void *arg);
 void		start_simulation(t_table *table);
 
 //utils.c
+int			check_simulation_end(t_table *table);
 void		print_action(t_philo *philo, const char *action);
 int			ft_usleep(size_t milliseconds);
 long long	get_current_time(void);

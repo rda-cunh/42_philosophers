@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/21 02:06:14 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:48:26 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void	philo_eat(t_philo *philo)
     {
         pthread_mutex_lock(philo->left_fork);
         print_action(philo, "has taken a fork");
+		if (check_simulation_end(philo->table))
+		{
+			pthread_mutex_unlock(philo->left_fork);
+			return;
+		}
         pthread_mutex_lock(philo->right_fork);
         print_action(philo, "has taken a fork");
     }
@@ -41,15 +46,23 @@ void	philo_eat(t_philo *philo)
     {
         pthread_mutex_lock(philo->right_fork);
         print_action(philo, "has taken a fork");
+		if (check_simulation_end(philo->table))
+		{
+			pthread_mutex_unlock(philo->left_fork);
+			return;
+		}
         pthread_mutex_lock(philo->left_fork);
         print_action(philo, "has taken a fork");
     }
 
 	pthread_mutex_lock(&philo->table->meal_mutex);
-	print_action(philo, "is eating");
-	philo->time_meal = get_current_time();
-	ft_usleep(philo->table->time_eat);
-	philo->eat_count++;
+	if (!check_simulation_end(philo->table))
+	{
+		print_action(philo, "is eating");
+		philo->time_meal = get_current_time();
+		ft_usleep(philo->table->time_eat);
+		philo->eat_count++;
+	}
 	pthread_mutex_unlock(&philo->table->meal_mutex);
 
 	pthread_mutex_unlock(philo->right_fork);
@@ -76,37 +89,14 @@ void	*philo_routine(void *arg)
 	}
 	while (1)
 	{
-		// Lock before reading end_meal_flg
-		pthread_mutex_lock(&philo->table->death_mutex);
-		if (philo->table->end_meal_flg)
-		{
-			pthread_mutex_unlock(&philo->table->death_mutex);
+		if (check_simulation_end(philo->table))
 			break ;
-		}
-		pthread_mutex_unlock(&philo->table->death_mutex);
-
 		philo_think(philo);
-
-		// Lock before reading end_meal_flg
-		pthread_mutex_lock(&philo->table->death_mutex);
-		if (philo->table->end_meal_flg)
-		{
-			pthread_mutex_unlock(&philo->table->death_mutex);
+		if (check_simulation_end(philo->table))
 			break ;
-		}
-		pthread_mutex_unlock(&philo->table->death_mutex);
-
 		philo_eat(philo);
-		
-		// Lock before reading end_meal_flg
-		pthread_mutex_lock(&philo->table->death_mutex);
-		if (philo->table->end_meal_flg)
-		{
-			pthread_mutex_unlock(&philo->table->death_mutex);
+		if (check_simulation_end(philo->table))
 			break ;
-		}
-		pthread_mutex_unlock(&philo->table->death_mutex);
-
 		philo_sleep(philo);
 	}
 	return (NULL);
@@ -156,7 +146,7 @@ void	*monitor_simulation(void *arg)
 			pthread_mutex_unlock(&table->death_mutex);
 			return (NULL);
 		}
-		ft_usleep(100); // Prevent busy waiting
+		ft_usleep(50); // Prevent busy waiting
 	}
 }
 

@@ -6,11 +6,21 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:59:41 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/21 01:58:58 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:30:14 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+int	check_simulation_end(t_table *table)
+{
+	int	end_flag;
+
+	pthread_mutex_lock(&table->death_mutex);
+	end_flag = table->end_meal_flg;
+	pthread_mutex_unlock(&table->death_mutex);
+	return (end_flag);
+}
 
 void	print_action(t_philo *philo, const char *action)
 {
