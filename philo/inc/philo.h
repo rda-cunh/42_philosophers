@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/21 02:30:33 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:45:57 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ long long	get_current_time(void);
 int			ft_atoi(const char *str);
 
 //exit.c
+
 void		join_threads(t_table *table);
 void		destroy_mutexes(t_table *table, int count);
 void		clean_data(t_table *table);
