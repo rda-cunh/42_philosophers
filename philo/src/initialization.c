@@ -6,38 +6,11 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:50:39 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 02:46:27 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 13:11:10 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-
-void	start_simulation(t_table *table)
-{
-	unsigned int	i;
-	pthread_t		monitor_thread;
-
-	i = 0;
-	table->start_time = get_current_time();
-	while (i < table->num_philo)
-	{
-		table->philos[i].time_meal = table->start_time;
-		if (pthread_create(&table->philos[i].thread, NULL, philo_routine, \
-		&table->philos[i]) != 0)
-		{
-			while (i > 0)
-			{
-				i--;
-				pthread_join(table->philos[i].thread, NULL);
-			}
-			error_exit("Failed to create philosopher thread.\n", table);
-		}
-		i++;
-	}
-	if (pthread_create(&monitor_thread, NULL, monitor_simulation, table) != 0)
-		error_exit("Failed to create monitor thread.\n", table);
-	pthread_join(monitor_thread, NULL);
-}
 
 void	fork_assignment(t_table *table)
 {

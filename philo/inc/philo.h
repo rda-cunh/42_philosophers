@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 02:37:20 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 13:10:58 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_table
 
 //funtions
 //initialization.c
-void		start_simulation(t_table *table);
 void		fork_assignment(t_table *table);
 void		summon_forks(t_table *table);
 void		summon_philos(t_table *table);
@@ -72,6 +71,7 @@ void		philo_eat(t_philo *philo);
 void		philo_sleep(t_philo *philo);
 void		*philo_routine(void *arg);
 void		*monitor_simulation(void *arg);
+void		start_simulation(t_table *table);
 
 //utils.c
 int			check_simulation_end(t_table *table);
