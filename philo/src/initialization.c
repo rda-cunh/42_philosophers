@@ -6,11 +6,38 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:50:39 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/20 01:29:01 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:46:27 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+void	start_simulation(t_table *table)
+{
+	unsigned int	i;
+	pthread_t		monitor_thread;
+
+	i = 0;
+	table->start_time = get_current_time();
+	while (i < table->num_philo)
+	{
+		table->philos[i].time_meal = table->start_time;
+		if (pthread_create(&table->philos[i].thread, NULL, philo_routine, \
+		&table->philos[i]) != 0)
+		{
+			while (i > 0)
+			{
+				i--;
+				pthread_join(table->philos[i].thread, NULL);
+			}
+			error_exit("Failed to create philosopher thread.\n", table);
+		}
+		i++;
+	}
+	if (pthread_create(&monitor_thread, NULL, monitor_simulation, table) != 0)
+		error_exit("Failed to create monitor thread.\n", table);
+	pthread_join(monitor_thread, NULL);
+}
 
 void	fork_assignment(t_table *table)
 {
@@ -65,12 +92,12 @@ void	summon_philos(t_table *table)
 
 void	set_table(t_table *table, int argc, char **argv)
 {
-	table->num_philo = ft_atoi(argv[1]);
-	table->time_die = ft_atoi(argv[2]);
-	table->time_eat = ft_atoi(argv[3]);
-	table->time_sleep = ft_atoi(argv[4]);
+	table->num_philo = ft_atol(argv[1]);
+	table->time_die = ft_atol(argv[2]);
+	table->time_eat = ft_atol(argv[3]);
+	table->time_sleep = ft_atol(argv[4]);
 	if (argc == 6)
-		table->num_meals_required = ft_atoi(argv[5]);
+		table->num_meals_required = ft_atol(argv[5]);
 	else
 		table->num_meals_required = -1;
 	table->end_meal_flg = 0;
@@ -79,4 +106,3 @@ void	set_table(t_table *table, int argc, char **argv)
 		pthread_mutex_init(&table->meal_mutex, NULL))
 		error_exit("Failed to initialize mutexes", table);
 }
-
