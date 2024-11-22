@@ -6,12 +6,13 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:09:18 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 02:15:41 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:49:46 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
+//verifies that an argument has only numerals
 int	isnumber(char *arg)
 {
 	int	i;
@@ -26,6 +27,7 @@ int	isnumber(char *arg)
 	return (1);
 }
 
+//checks for valid arguments and call error_exit function
 int	check_args(char **argv)
 {
 	if (!argv[1] || !argv[2] || !argv[3] || !argv[4])

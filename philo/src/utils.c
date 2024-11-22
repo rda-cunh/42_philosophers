@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:59:41 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 02:13:51 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:45:29 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ long long	get_current_time(void)
 	return ((timeval.tv_sec * 1000) + (timeval.tv_usec / 1000));
 }
 
-//turn asci into intiger
+//turn asci into long
 int	ft_atol(const char *str)
 {
 	long long	result;

@@ -1,70 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulation.c                                       :+:      :+:    :+:   */
+/*   simulation2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 00:51:27 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 13:45:28 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:13:18 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	philo_think(t_philo *philo)
-{
-	print_action(philo, "is thinking");
-}
-
-void	philo_eat(t_philo *philo)
-{
-	if (philo->table->num_philo == 1)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-		ft_usleep(philo->table->time_die);
-		pthread_mutex_unlock(philo->left_fork);
-		return ;
-	}
-	if (philo->left_fork < philo->right_fork)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-	}
-	pthread_mutex_lock(&philo->table->meal_mutex);
-	philo->time_meal = get_current_time();
-	philo->eat_count++;
-	pthread_mutex_unlock(&philo->table->meal_mutex);
-	print_action(philo, "is eating");
-	ft_usleep(philo->table->time_eat);
-	if (philo->left_fork < philo->right_fork)
-	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-	}
-}
-
-void	philo_sleep(t_philo *philo)
-{
-	print_action(philo, "is sleeping");
-	ft_usleep(philo->table->time_sleep);
-}
-
+//defines the routine of the philosopher with a special case for 1 philo
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
@@ -92,6 +40,7 @@ void	*philo_routine(void *arg)
 	return (NULL);
 }
 
+//helper function that checks if a philo died (u25)
 static int	check_philo_dead(t_philo *philo, t_table *table)
 {
 	long long		time_from_meal;
@@ -108,9 +57,10 @@ static int	check_philo_dead(t_philo *philo, t_table *table)
 		return (1);
 	}
 	pthread_mutex_unlock(&table->meal_mutex);
-	return (0); 
+	return (0);
 }
 
+//helper function that checks if all philos are full (u25)
 static int	check_philos_are_full(t_table *table)
 {
 	unsigned int	i;
@@ -137,6 +87,7 @@ static int	check_philos_are_full(t_table *table)
 	return (0);
 }
 
+//routine of the monitor thread checking for dead or 'all full philos'
 void	*monitor_simulation(void *arg)
 {
 	t_table			*table;
@@ -158,6 +109,7 @@ void	*monitor_simulation(void *arg)
 	}
 }
 
+//starts simulation, create philos (threads) and a monitor
 void	start_simulation(t_table *table)
 {
 	unsigned int	i;

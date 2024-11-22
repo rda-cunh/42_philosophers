@@ -6,7 +6,7 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:06 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 13:10:58 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:45:10 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_table
 }	t_table;
 
 //funtions
-//initialization.c
+//main.c
 void		fork_assignment(t_table *table);
 void		summon_forks(t_table *table);
 void		summon_philos(t_table *table);
@@ -65,16 +65,17 @@ void		set_table(t_table *table, int argc, char **argv);
 int			isnumber(char *arg);
 int			check_args(char **argv);
 
-//simulation.c
+//simulation1.c
 void		philo_think(t_philo *philo);
 void		philo_eat(t_philo *philo);
 void		philo_sleep(t_philo *philo);
+
+//simulation2.c
 void		*philo_routine(void *arg);
 void		*monitor_simulation(void *arg);
 void		start_simulation(t_table *table);
 
 //utils.c
-int			check_simulation_end(t_table *table);
 void		print_action(t_philo *philo, const char *action);
 int			ft_usleep(size_t milliseconds);
 long long	get_current_time(void);

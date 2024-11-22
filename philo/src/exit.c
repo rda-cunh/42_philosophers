@@ -6,12 +6,13 @@
 /*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:19:55 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 02:46:22 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:48:05 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
+//funtion to join philo threads (end_simulation)
 void	join_threads(t_table *table)
 {
 	unsigned int	i;
@@ -25,6 +26,7 @@ void	join_threads(t_table *table)
 	}
 }
 
+//function to clean all the mutexes
 void	destroy_mutexes(t_table *table, int count)
 {
 	int	i;
@@ -40,6 +42,7 @@ void	destroy_mutexes(t_table *table, int count)
 	pthread_mutex_destroy(&table->meal_mutex);
 }
 
+//function to free forks and philos arrays
 void	clean_data(t_table *table)
 {
 	if (table->forks)
