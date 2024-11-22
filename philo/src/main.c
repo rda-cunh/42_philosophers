@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rda-cunh <rda-cunh@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rda-cunh <rda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:08:22 by rda-cunh          #+#    #+#             */
-/*   Updated: 2024/11/22 17:56:44 by rda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:18:55 by rda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	set_table(t_table *table, int argc, char **argv)
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0 || \
 		pthread_mutex_init(&table->death_mutex, NULL) != 0 || \
 		pthread_mutex_init(&table->meal_mutex, NULL))
-		error_exit("Failed to initialize mutexes", table);
+		error_exit("Failed to initialize mutexes.\n", table);
 }
 
 int	main(int argc, char **argv)
@@ -89,7 +89,7 @@ int	main(int argc, char **argv)
 	t_table	table;
 
 	if (argc != 5 && argc != 6)
-		error_exit("Wrong number of arguments", &table);
+		error_exit("Wrong number of arguments.\n", NULL);
 	check_args(argv);
 	set_table(&table, argc, argv);
 	summon_philos(&table);
